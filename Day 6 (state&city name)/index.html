@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <!-- THIS IS FOR API PRACTICE , BEING COMFORTABLE WITH JSON AND FETCH AND DISPLAY DATA AFTER FETCHING  -->
+    <form class="search-form">
+        <input type="text" class="search" placeholder="city or state">
+        <ul class="suggestions">
+            <li>Filter for a city</li>
+            <li>or a state</li>
+        </ul>
+    </form>
+
+    <script>
+        const url = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+        let cities= [];
+        const input= document.querySelector('input');
+        const list = document.querySelector('.suggestions');
+        const oriData= list.innerHTML;
+       
+        // FETCHING DATA WITH 'FETCH' AND 'ASYNC FUNCTIONS'
+        /* const data = (async () => {
+           try{
+            const res= await fetch(url);
+            const d = await res.json();
+            cities=d;
+           }
+           catch(err){
+               console.log(err);
+           }
+        })(); */
+        fetch(url)
+        .then(res => res.json())
+        .then(d => cities.push(...d))
+
+        //FINDING DATA
+        function findData(inputValue){
+            const regex = new RegExp(inputValue, 'gi');
+            const newArr= cities.filter(place =>{
+                return place.city.match(regex) || place.state.match(regex);
+            })
+            displayData(newArr, regex);
+        }
+        //COMMA IN NUMBERS
+        function numberWithCommas(x) {
+             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
+        //DISPLAYING DATA
+        function displayData(arr,regex){
+            if(input.value==''){
+                list.innerHTML=oriData;
+                return;
+            }
+           const html = arr.map( item => {
+               const cityName= item.city.replace(regex, `<span class="hl">${input.value}</span>`);
+               const stateName= item.state.replace(regex, `<span class="hl">${input.value}</span>`);
+
+               return `<li> <span>${cityName},${stateName}</span>
+                        <span>${numberWithCommas(item.population)}</span>`;
+            }).join('')
+            
+            list.innerHTML = html; 
+        }
+        input.addEventListener("input",() => findData(input.value));
+    </script>
+</body>
+</html>

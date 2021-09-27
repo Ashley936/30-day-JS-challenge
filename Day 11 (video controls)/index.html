@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom HTML5 video player</title>
+    <style>
+        body{
+            margin: 0%;
+            padding: 0%;
+            min-height: 100vh;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, rgb(9,5,16),rgb(43, 3, 112),rgb(9,5,16));
+        }
+        .video{
+            position: relative;
+            height: fit-content;
+            overflow: hidden;
+            box-shadow: -5px -5px 15px rgba(0,0,0,0.3),5px 5px 15px rgba(0,0,0,0.3);
+            border-radius: 10px;
+        }
+        .controls{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            position: absolute;
+            bottom: -10%;
+            padding: 0 0 10px 0;
+            width: 100%;
+            background: rgba(255,255,255,0.5);
+            transition: all 0.5s;
+        }
+        video:hover+.controls{
+            bottom: 0%;
+        }
+        .progress{
+            flex-basis: 100%;
+            margin: 5px 0;
+            background-color: rgba(255,255,255,0.2);
+        }
+        .progress-bar{
+            width: 0%;
+            height: 3px;
+            background-color: yellow;
+        }
+        .play-btn{
+            height: 25px
+        }
+
+    </style>
+</head>
+<body>
+    <div class="video">
+            <video src="demo.mp4" class="content"></video>
+            <div class="controls">
+                <div class="progress"><div class="progress-bar"></div></div>
+                <button class="play-btn">&#9658;</button>
+                <input type="range" name="volume" class="slider" min="0" max="1" step="0.05"    value="1">
+                <input type="range" name="playbackRate" class="slider" min="0.5" max="2" step="0.1" value="1">
+                <button data-skip="-10" class="play-btn">« 10s</button>
+                <button data-skip="25" class="play-btn">25s »</button>
+                </div>
+            </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
